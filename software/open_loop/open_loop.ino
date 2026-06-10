@@ -1,3 +1,32 @@
+/*
+3-Clause BSD NON-AI License
+
+Copyright 2025 BABIN-RIBY Hugo
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
+in the documentation and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
+derived from this software without specific prior written permission.
+
+4. The source code and the binary form, and any modifications made to them may not be used for the purpose of training or improving machine learning algorithms,
+including but not limited to artificial intelligence, natural language processing, or data mining. This condition applies to any derivatives,
+modifications, or updates based on the Software code. Any usage of the source code or the binary form in an AI-training dataset is considered a breach of this License.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
 #define HINA 3
 #define LINA 5
 #define HINB 9
@@ -6,8 +35,8 @@
 #define LINC 2
 
 #define MIN_OPEN_DELAY 2000
-#define THROTTLE 18
-#define COOLDOWN 299
+#define THROTTLE 10
+#define COOLDOWN 20
 
 volatile int step = 0;
 volatile int wait = 0;
@@ -35,7 +64,7 @@ void setup(){
   // STEP ++ interrupt
   TCCR1A = 0;
   TCCR1B = (1 << WGM12) | (1 << CS11);  // CTC + prescaler /8
-  OCR1A  = 1799;                        
+  OCR1A  = timer_1_delay;                        
   TIMSK1 = (1 << OCIE1A);
 
   // Timer2 setup - CTC, /8 prescaler, 8µs initial period
