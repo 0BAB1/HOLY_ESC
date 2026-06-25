@@ -40,14 +40,16 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define PHASE_B 2
 #define PHASE_C 1
 
-#define MIN_OPEN_DELAY 2500
+#define DEADTIME_DELAY 2
+
+#define MIN_OPEN_DELAY 1100
 
 #define PWM_CYCLE 100
 volatile uint16_t throttle = 10;
 
 volatile uint8_t step = 0;
 volatile uint8_t wait = 0;
-volatile uint16_t timer_1_delay = 4999;
+volatile uint16_t timer_1_delay = 4000;
 
 #define BLANKING_TICKS 0
 volatile uint16_t step_ticks = 0;
@@ -58,12 +60,13 @@ volatile uint8_t first_time  = 1;
 volatile uint16_t raw_period  = 0;
 volatile unsigned long int last_period = 0;
 
-#define PERIOD_FILTER_N 1
+#define PERIOD_FILTER_N 4
 volatile uint16_t periods[PERIOD_FILTER_N];
 volatile uint8_t period_ptr = 0;
 
-
 void setup(){
+  Serial.begin(115200);
+
   // ================
   // SETUP PINS
   // ================
@@ -95,12 +98,10 @@ void setup(){
   OCR2B  = PWM_CYCLE;                     
   TIMSK2 = (1 << OCIE2A) | (1 << OCIE2B); // enable compare match interrupt
 
-  // init perioods digital filter
+  // init periods for digital MAF
   for(int i = 0; i < PERIOD_FILTER_N; i++){
     periods[i] = MIN_OPEN_DELAY;
   }
-
-  Serial.begin(115200);
 }
 
 ISR(TIMER1_COMPA_vect) {
@@ -121,6 +122,7 @@ ISR(TIMER1_COMPA_vect) {
     timer_1_delay = MIN_OPEN_DELAY;       
     TIMSK1 &= ~(1 << OCIE1A);                                   // Disable COMPA, COMPB will be operated by ZC detection comp ISR
     TCCR1B &= ~(1 << WGM12);                                    // Remove CTC
+
 
     // Setup the comparator
     DIDR0 |= (1 << ADC1D) | (1 << ADC2D) | (1 << ADC3D);  // disable dig. inpt buffers on phase pins (reduce noise, more efficient)
@@ -169,6 +171,16 @@ ISR(TIMER1_COMPB_vect) {
     case 0: ACSR |= (1 << ACIS1) | (1 << ACIS0); break; // Rising edge
   }
 
+  // // Apply step immediatly
+  // switch(step){
+  //   case 0: step0(); break;
+  //   case 1: step1(); break;
+  //   case 2: step2(); break;
+  //   case 3: step3(); break;
+  //   case 4: step4(); break;
+  //   case 5: step5(); break;
+  // }
+
   // Disble ISR 1B, COMP ISR will reenable it and take car of the scheduling
   TIMSK1 &= ~(1 << OCIE1B);
 }
@@ -182,19 +194,10 @@ ISR(TIMER2_COMPA_vect){
   PORTD = B00000000;
   PORTB = B00000000;
 
-  // enforced dead time using NOPs
-  __asm__ __volatile__ ("nop\n\t");
-  __asm__ __volatile__ ("nop\n\t");
-  __asm__ __volatile__ ("nop\n\t");
-  __asm__ __volatile__ ("nop\n\t");
-  __asm__ __volatile__ ("nop\n\t");
-  __asm__ __volatile__ ("nop\n\t");
-  __asm__ __volatile__ ("nop\n\t");
-  __asm__ __volatile__ ("nop\n\t");
-  __asm__ __volatile__ ("nop\n\t");
-  __asm__ __volatile__ ("nop\n\t");
-  __asm__ __volatile__ ("nop\n\t");
-  __asm__ __volatile__ ("nop\n\t");
+  for(uint8_t j = 0; j < DEADTIME_DELAY; j ++){
+    // slight dead time delay
+    __asm__ __volatile__ ("nop\n\t");
+  }
 
   // Apply step
   switch(step){
@@ -206,10 +209,11 @@ ISR(TIMER2_COMPA_vect){
     case 5: step51(); break;
   }
 
-  // Enable comparator on PWM ON (if blanking period is over)
-  if(step_ticks < BLANKING_TICKS || closed_loop == 0 || zc_detected == 1) return;
-  ACSR |= (1<< ACI);  // clear eventual pending
-  ACSR |= (1<< ACIE); // enable comp ISR
+  // Enable comparator
+  if(step_ticks >= BLANKING_TICKS && closed_loop == 1 && zc_detected == 0){
+    ACSR |= (1<< ACI);  // clear eventual pending
+    ACSR |= (1<< ACIE); // enable comp ISR
+  }
 }
 
 ISR(TIMER2_COMPB_vect) {
@@ -223,19 +227,9 @@ ISR(TIMER2_COMPB_vect) {
   PORTD = B00000000;
   PORTB = B00000000;
 
-  // enforced dead time using NOPs
-  __asm__ __volatile__ ("nop\n\t");
-  __asm__ __volatile__ ("nop\n\t");
-  __asm__ __volatile__ ("nop\n\t");
-  __asm__ __volatile__ ("nop\n\t");
-  __asm__ __volatile__ ("nop\n\t");
-  __asm__ __volatile__ ("nop\n\t");
-  __asm__ __volatile__ ("nop\n\t");
-  __asm__ __volatile__ ("nop\n\t");
-  __asm__ __volatile__ ("nop\n\t");
-  __asm__ __volatile__ ("nop\n\t");
-  __asm__ __volatile__ ("nop\n\t");
-  __asm__ __volatile__ ("nop\n\t");
+  for(uint8_t j = 0; j < DEADTIME_DELAY; j ++){
+    __asm__ __volatile__ ("nop\n\t");
+  }
 
   // Apply step
   switch(step){
@@ -248,18 +242,22 @@ ISR(TIMER2_COMPB_vect) {
   }
 
   step_ticks++;
-  ACSR &= ~(1<< ACIE); // diable comp ISR during PMW OFF period
+  OCR2A = throttle;    // update throttle for next turn off
 }
 
 ISR(ANALOG_COMP_vect){
   // BEMF ZC DETECTED DURING PWM ON
 
   // Debounce (EDGE ORDER RELATED)
-  for(uint8_t i = 0; i < 5; i ++){
+  for(uint8_t i = 0; i < 3; i ++){
     uint8_t zc_state = (ACSR >> ACO) & 1;
     switch(step & 1){                                              
       case 0: if(zc_state != 0) return; break; // odd step = falling, want ACO=0 after
       case 1: if(zc_state != 1) return; break;
+    }
+    for(uint8_t j = 0; j < 4; j ++){
+      // slight delay between reads
+      __asm__ __volatile__ ("nop\n\t");
     }
   }
 
@@ -270,14 +268,10 @@ ISR(ANALOG_COMP_vect){
   // Measure the raw period since last ZC and update last_period, unless it's the first time, TCNT1 is NOT gonna be valid !
   if(first_time == 0){
     raw_period = TCNT1;
-    // reject samples that are implausibly far from current estimate (+- 25% tolerence)
-    uint16_t upper = last_period + (last_period >> 2); // +25%
-    uint16_t lower = (last_period > (last_period >> 2)) ? last_period - (last_period >> 2) : 0; // -25%, no underflow
-    if(raw_period >= lower && raw_period <= upper){
-        period_ptr++;
-        if(period_ptr >= PERIOD_FILTER_N) period_ptr = 0;
-        periods[period_ptr] = raw_period;
-    }
+
+    period_ptr++;
+    if(period_ptr >= PERIOD_FILTER_N) period_ptr = 0;
+    periods[period_ptr] = raw_period;
 
     // apply period digital filter
     last_period = 0;
@@ -358,6 +352,6 @@ void step51(){
 }
 
 void loop(){
-  Serial.println(raw_period);
-  delay(10);
+  Serial.println(last_period);
+  delay(100);
 }
