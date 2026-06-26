@@ -4508,12 +4508,6 @@
 		(uuid "45e54eba-85c0-470c-af58-4116fbd9118c")
 	)
 	(junction
-		(at 100.33 120.65)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "4652f3b6-cb53-4e3d-bbf8-ccaede9ece99")
-	)
-	(junction
 		(at 212.09 160.02)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4628,12 +4622,6 @@
 		(uuid "977c9b84-fc97-467a-b810-60a0c303eacd")
 	)
 	(junction
-		(at 100.33 138.43)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "98136fde-af15-4e15-85fc-11874c5c2f5d")
-	)
-	(junction
 		(at 41.91 97.79)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4728,12 +4716,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "c38b8950-0c9e-4229-8118-1ac278c5f5a3")
-	)
-	(junction
-		(at 100.33 104.14)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "c51fdd0b-9f36-450e-aa0f-058b6ca0f32c")
 	)
 	(junction
 		(at 55.88 90.17)
@@ -5125,16 +5107,6 @@
 	)
 	(wire
 		(pts
-			(xy 100.33 102.87) (xy 100.33 104.14)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "19d897ca-5886-4a2e-b84c-61e3574874a0")
-	)
-	(wire
-		(pts
 			(xy 143.51 33.02) (xy 152.4 33.02)
 		)
 		(stroke
@@ -5192,16 +5164,6 @@
 			(type default)
 		)
 		(uuid "2135a0a9-ec15-424f-ab11-f3d252674704")
-	)
-	(wire
-		(pts
-			(xy 100.33 137.16) (xy 100.33 138.43)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "219f8918-ddbe-4d0e-ba61-4cb06b717ccf")
 	)
 	(wire
 		(pts
@@ -5372,16 +5334,6 @@
 			(type default)
 		)
 		(uuid "350919f7-e83b-4b79-bda4-8eb053743497")
-	)
-	(wire
-		(pts
-			(xy 100.33 119.38) (xy 100.33 120.65)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "355d358b-43f0-4ba2-bfa4-a9c4b04e4d26")
 	)
 	(wire
 		(pts
@@ -10429,72 +10381,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+12V")
-		(at 100.33 137.16 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "2e1150e2-3348-415b-befc-3d53c21eceac")
-		(property "Reference" "#PWR010"
-			(at 100.33 140.97 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+12V"
-			(at 100.33 132.08 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 100.33 137.16 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 100.33 137.16 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+12V\""
-			(at 100.33 137.16 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "3471307a-0fc9-4a63-b264-7bb9f468fc00")
-		)
-		(instances
-			(project "HOLY_ESC"
-				(path "/ee0bf206-1793-42b0-85bf-6b0acfbcf304"
-					(reference "#PWR010")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:C")
 		(at 303.53 99.06 0)
 		(unit 1)
@@ -10691,72 +10577,6 @@
 			(project "HOLY_ESC"
 				(path "/ee0bf206-1793-42b0-85bf-6b0acfbcf304"
 					(reference "Q4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+12V")
-		(at 100.33 119.38 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "336184be-af12-41ff-b816-80975c93adef")
-		(property "Reference" "#PWR08"
-			(at 100.33 123.19 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+12V"
-			(at 100.33 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 100.33 119.38 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 100.33 119.38 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+12V\""
-			(at 100.33 119.38 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "534504d0-a0b4-4836-80d8-5406e24ee725")
-		)
-		(instances
-			(project "HOLY_ESC"
-				(path "/ee0bf206-1793-42b0-85bf-6b0acfbcf304"
-					(reference "#PWR08")
 					(unit 1)
 				)
 			)
@@ -14467,72 +14287,6 @@
 			(project "HOLY_ESC"
 				(path "/ee0bf206-1793-42b0-85bf-6b0acfbcf304"
 					(reference "R11")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+12V")
-		(at 100.33 102.87 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "9e8e88a7-c7dd-4da4-8bea-8365bbd598de")
-		(property "Reference" "#PWR09"
-			(at 100.33 106.68 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+12V"
-			(at 100.33 97.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 100.33 102.87 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 100.33 102.87 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+12V\""
-			(at 100.33 102.87 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "07bce65b-3fbb-40d6-9987-6ed9032496bb")
-		)
-		(instances
-			(project "HOLY_ESC"
-				(path "/ee0bf206-1793-42b0-85bf-6b0acfbcf304"
-					(reference "#PWR09")
 					(unit 1)
 				)
 			)

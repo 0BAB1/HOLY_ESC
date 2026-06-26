@@ -1,6 +1,6 @@
 {
   "board": {
-    "active_layer": 5,
+    "active_layer": 9,
     "active_layer_preset": "",
     "auto_track_width": true,
     "hidden_netclasses": [
@@ -22,7 +22,24 @@
       "/<NO NET>",
       "/12SS",
       "Net-(D1-A)",
-      "Net-(D2-A)"
+      "Net-(D2-A)",
+      "Net-(U2-BOOT0)",
+      "Net-(U2-PB4)",
+      "Net-(U2-PB6)",
+      "Net-(U2-PB7)",
+      "unconnected-(U2-PB5-Pad28)",
+      "unconnected-(U2-PA12-Pad22)",
+      "unconnected-(U2-PA6-Pad12)",
+      "unconnected-(U2-PF1-Pad3)",
+      "unconnected-(U2-PA15-Pad25)",
+      "unconnected-(U2-PA3-Pad9)",
+      "unconnected-(U2-PB3-Pad26)",
+      "unconnected-(U2-PF0-Pad2)",
+      "unconnected-(U2-PA11-Pad21)",
+      "unconnected-(U2-PA2-Pad8)",
+      "/BSTA",
+      "/BSTB",
+      "/BSTC"
     ],
     "high_contrast_mode": 0,
     "net_color_mode": 2,
@@ -69,7 +86,7 @@
       "conflict_shadows",
       "shapes"
     ],
-    "visible_layers": "ffffffff_ffffffff_fffffff5_ffffffab",
+    "visible_layers": "ffffffff_ffffffff_fffffff5_fffffffb",
     "zone_display_mode": 0
   },
   "git": {
