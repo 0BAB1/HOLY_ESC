@@ -59,7 +59,7 @@ So you'll need :
 - A Stlink V2 (or any clone should work as long as it has SWD)
 - Download STM32CUBE programmer software
 
-So connect the ESC to your power supply, I suggest limiting max current to 1 Amp in case a fault arises. Red LEDS should turn on.
+So connect the ESC to your power supply on the dedicated pads (Labeled "+" and "-" on the back of the PCB), I suggest limiting max current to 1 Amp in case a fault arises. Red LEDS should turn on, indicating a good supply of voltage into the board.
 
 ![plugged img](./images/PLUGGED.png)
 
@@ -71,20 +71,29 @@ And plug it into you computer.
 
 Launch STMCUBE Programmer, click connect and it should recognze the MCU on the ESC board.
 
+At this point you can also connect a BLDC motor on the 3 phases pads using solder (labeled A; B & C on the back of the board).
+
 **2. Load the Firmware**
 
 To load the firmware, you have to load a coouple things. The procedure is describe here pretty well :
 
 [https://github-wiki-see.page/m/AlkaMotors/AM32-MultiRotor-ESC-firmware/wiki/Memory-Layout-for-flashing-with-a-St-link?utm_source=chatgpt.com](https://github-wiki-see.page/m/AlkaMotors/AM32-MultiRotor-ESC-firmware/wiki/Memory-Layout-for-flashing-with-a-St-link?utm_source=chatgpt.com)
 
-Youn can use STMCube's "Erasing and Programming" tab to select a binary and load it to a specified address. Just load each binary at the right address and you should be good to go.
+You can use STMCube's "Erasing and Programming" tab to select a binary and load it to a specified address. Just load each binary at the right address and you should be good to go.
 
-> To verify if you corectyly modified a memory region, you cna use the "Memory and File editing tab" to read a specific memory region, to check if it changed from the default values.
+> To verify if you corecty modified a memory region, you can use the "Memory and File editing tab" to read a specific memory region, to check if it changed from the default values.
 
 Bootloading and eeprom binaries are found in the page linked above. **You will find the specific binary built for this specific board in `./software/`**
 
 > [!TIP]  
 > If you are hardstuck on trying to lad a firmware, you can open an issue to get support.
+
+Once the firmware is succesfully loaded, connect a BLDC motor to the phases pads (labeled A, B and C at the back of the PCB) using solder. Turn on your power supply (with STLINKV2 connected to PC or completely off the board to avoid asserting reset) and you should ear 3 beeps, indicating the motor is ready to armed !
+
+Congratulations ! Now to spin a motor, you can use an arduino + voltage divider as a quick test, like I did in the video (use an LLM to write the arming sequence and speed command PWM generation) or use a servo tester / real flight controller.
+
+> [!INFO]
+> Telemetry feedback and AM32 monitoring tools not tested yet
 
 ## Future Work
 
