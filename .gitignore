@@ -12,6 +12,7 @@
 *-cache*
 *-bak
 *-bak*
+.DS_Store
 *~
 ~*
 _autosave-*
